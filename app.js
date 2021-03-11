@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const productRoute = require("./api/routes/products");
 const ordersRoute = require("./api/routes/order");
+const usersRoute = require("./api/routes/users");
 
 mongoose.connect(
   "mongodb+srv://rest-shop:" +
@@ -14,7 +15,10 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
+mongoose.Promise = global.Promise;
+
 app.use(morgan("dev"));
+app.use('/uploads', express.static('uploads'));
 app.use(
   bodyParser.urlencoded({
     extended: false,
@@ -37,6 +41,7 @@ app.use((req, res, next) => {
 
 app.use("/products", productRoute);
 app.use("/orders", ordersRoute);
+app.use("/user", usersRoute);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
