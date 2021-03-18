@@ -29,6 +29,7 @@ const upload = multer({
 });
 
 router.get('/', (req, res, next) => {
+	console.log(req, res)
     Product.find()
         .select('name price _id productImage')
         .exec()

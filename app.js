@@ -3,6 +3,7 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 const productRoute = require("./api/routes/products");
 const ordersRoute = require("./api/routes/order");
@@ -26,11 +27,13 @@ app.use(
 );
 app.use(bodyParser.json());
 
+app.use(cors());
+/*
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-type, Accept, Authorization"
+    "Origin, X-Requested-With, Content-Type"
   );
   if (req.method === "OPTIONS") {
     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
@@ -38,7 +41,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-
+*/
 app.use("/products", productRoute);
 app.use("/orders", ordersRoute);
 app.use("/user", usersRoute);
