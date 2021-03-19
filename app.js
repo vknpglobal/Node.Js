@@ -42,9 +42,9 @@ app.use((req, res, next) => {
   next();
 });
 */
-app.use("/products", productRoute);
-app.use("/orders", ordersRoute);
-app.use("/user", usersRoute);
+app.use("/api/products", productRoute);
+app.use("/api/orders", ordersRoute);
+app.use("/api/user", usersRoute);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
