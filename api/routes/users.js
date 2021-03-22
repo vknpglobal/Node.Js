@@ -40,6 +40,7 @@ router.post('/signup', (req, res, next) => {
                     } else {
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
+							name: req.body.name,
                             email: req.body.email,
                             password: hash
                         });
@@ -61,6 +62,35 @@ router.post('/signup', (req, res, next) => {
             }
         })
 });
+
+
+router.patch('/:userId', (req, res, next) => {
+    const id = req.params.userId;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value
+    }
+    User.updateOne({
+            _id: id
+        }, {
+            $set: updateOps
+        })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: 'User updated',
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/user/' + id
+                }
+            })
+        })
+        .catch(error => {
+            res.status(500).json({
+                error: error
+            })
+        });
+})
 
 
 router.delete('/:userId', (req, res, next) => {
@@ -96,6 +126,7 @@ router.post('/login', (req, res, next) => {
                 console.log(result)
                 if (err) {
                     return res.status(401).json({
+						status: res.status,
                         message: 'Auth failed'
                     })
                 }
@@ -110,6 +141,7 @@ router.post('/login', (req, res, next) => {
                         }
                     )
                     return res.status(200).json({
+						statusCode: res.statusCode,
                         message: 'Auth successful',
                         token: token
                     })
