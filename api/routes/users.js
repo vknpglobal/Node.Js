@@ -3,9 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const checkAuth = require('../middleware/check-auth');
 
 const User = require('../model/user');
-const user = require('../model/user');
 
 
 router.get('/', (req, res, next) => {
@@ -64,7 +64,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 
-router.patch('/:userId', (req, res, next) => {
+router.patch('/:userId', checkAuth, (req, res, next) => {
     const id = req.params.userId;
     const updateOps = {};
     for (const ops of req.body) {
@@ -93,7 +93,7 @@ router.patch('/:userId', (req, res, next) => {
 })
 
 
-router.delete('/:userId', (req, res, next) => {
+router.delete('/:userId', checkAuth, (req, res, next) => {
     User.remove({
             _id: req.params.userId
         })
